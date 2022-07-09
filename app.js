@@ -1,48 +1,41 @@
-var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const loaders = require("./loaders")
+const path = require('path');
+const app = express();
+const logger = require("./loaders/logger");
+const config = require("./config") 
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static(path.join(__dirname, 'build')));
-
-
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// this serves as loader
+const initiateApp = async () => {
+  try {
+    const appLoaded = await loaders(app);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+    if (appLoaded) {
+      const port = config.port || 3000;
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+      app.listen(port, (error) => {
+        if (error) {
+            logger.error(`Server failed to start, ${error.message}`);                    
+            process.exit(1);                
+        }
+        logger.info(`your server is ready at port ${port}`);                
+      })
+    } else {
+      throw new Error("Couldn't load app");
+    }
+   
+  } catch (error) {
+    console.log(error);
+    logger.error(error.message);  
+  }
+}
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+initiateApp();
 
 module.exports = app;
