@@ -1,13 +1,13 @@
 const bodyParser = require("body-parser");
 const { apiErrorHandler, handle404, unCaughtExceptionAndUnhandledRejection } = require("./errorHandler");
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var express = require('express');
-//config = require("../config"),
-//routes = require("../api"),
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const config = require("../config");
+const routes = require("../api");
 const cors = require("cors");
-//var indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/users');
+//const indexRouter = require('./routes/index');
+//const usersRouter = require('./routes/users');
 
 
 module.exports = async (app) => {
@@ -24,11 +24,11 @@ module.exports = async (app) => {
     app.use(cookieParser());
     //app.use(express.static(path.join(__dirname, 'public')));
 
-    
+    console.log(config.apiPath);
 
     //app.use('/', indexRouter);
     //app.use('/users', usersRouter);
-    //app.use(config.apiPath, routes());
+    app.use(config.apiPath, routes());
 
 
     //error handling
