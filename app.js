@@ -3,7 +3,8 @@ const loaders = require("./loaders")
 const path = require('path');
 const app = express();
 const logger = require("./loaders/logger");
-const config = require("./config") 
+const config = require("./config")
+const { apiErrorHandler, handle404 } = require("./loaders/errorHandler");
 
 
 app.use(express.static(path.join(__dirname, 'build')));
@@ -37,5 +38,8 @@ const initiateApp = async () => {
 }
 
 initiateApp();
+
+app.use(apiErrorHandler);
+app.use(handle404);
 
 module.exports = app;

@@ -1,11 +1,12 @@
+const AuthService = require("../../services/auth");
+const { SignIn } = new AuthService();
 
-const userSignUp = async (req, res) => {
-    
-    //let createdUser = await SignUp(req.body);
-    
-    res.status(201).json({ message: "This is the sign up" });
+const userSignIn =  async (req, res) => {
+    let signedInUser = await SignIn(req.body);
+
+    res.status(200).json(signedInUser);
 }
 
 module.exports = {
-    userSignUp,
+    userSignIn,
 }

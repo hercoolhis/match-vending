@@ -1,15 +1,25 @@
 
 const { Router } = require("express");
-const { userSignUp } = require("../controllers/user")
+const { userSignUp, fetchUser, updateUser, deleteUser } = require("../controllers/user")
 const route = Router();
 
 
 
 module.exports = (app) => {
-    app.use('/user', route);
-
+    
     //signup route ...validate request body first
-    route.get('/', userSignUp);
+    route.post('/', userSignUp);
+
+    // fetch user
+    route.get('/:id', fetchUser);
+
+    // update user
+    route.put('/:id', updateUser);
+
+    // update user
+    route.delete('/:id', deleteUser);
+
+    app.use('/user', route);
 
     //signin route
     //route.post('/signin', userSignIn);

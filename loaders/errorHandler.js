@@ -8,7 +8,7 @@ const handle404 = (req, res, next) => {
 
 const apiErrorHandler = (err, req, res, next) => {
     logger.error(err);
-    res.status(err.statusCode || 500).send(err.message);
+    res.status(err.statusCode || 500).json({ message: err.message});
 }
 
 const unCaughtExceptionAndUnhandledRejection = (error) => {

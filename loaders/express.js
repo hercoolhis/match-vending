@@ -32,15 +32,13 @@ module.exports = async (app) => {
 
 
     //error handling
-    app.use(apiErrorHandler);
-    app.use(handle404);
-    process.on('uncaughtException', (error) => {
-        unCaughtExceptionAndUnhandledRejection(error);
-    })
+    // process.on('uncaughtException', (error) => {
+    //     unCaughtExceptionAndUnhandledRejection(error);
+    // })
     
-    process.on('unhandledRejection', (error) => {
-        unCaughtExceptionAndUnhandledRejection(error);
-    })
+    // process.on('unhandledRejection', (error) => {
+    //     unCaughtExceptionAndUnhandledRejection(error);
+    // })
 
     return app;
 }
