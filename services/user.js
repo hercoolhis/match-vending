@@ -4,7 +4,7 @@ const { createUser, findUser, updateUser, deleteUser } = require("../data-access
 const { Logform } = require("winston");
 
 
-module.exports = class AuthService {
+module.exports = class UserService {
 
     constructor() {        
         this.FetchUser = this.FetchUser.bind(this);
