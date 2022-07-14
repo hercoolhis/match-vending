@@ -30,7 +30,7 @@ const deleteUser = async (id) => {
 const findUser = async (query, includePassword = false) => {
     const User = await setUserRepository();
 
-    const select = ['id', 'username', 'deposit'];
+    const select = ['id', 'username', 'deposit', "role"];
 
     if (includePassword) {
         select.push('password');

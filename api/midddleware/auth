@@ -1,0 +1,50 @@
+const jwt = require('jsonwebtoken');
+const { secret } = require('../../config');
+const { findUser } = require('../../data-access/user');
+
+
+const checkAndValidateToken = async (req, res, next) => { 
+    
+    console.log(req.headers['authorization']);
+   
+    let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
+    
+    if (token) {
+        if (token.startsWith('Bearer ')) {
+            // Remove Bearer from string
+            token = token.slice(7, token.length);
+        }
+
+        console.log(token, secret);
+        jwt.verify(token, secret, async (err, decoded) => {
+            if (err) {
+                console.log(err);
+                return res.status(401).json({
+                    success: false,
+                    message: 'Token is not valid'
+                });
+            } else {
+                req.decoded = decoded;
+                let loggedInUser = await findUser({ username: decoded.username });
+
+                if (loggedInUser) {
+                    req.user = loggedInUser;
+                    next();
+                } else {
+                    return res.status(401).json({
+                        success: false,
+                        message: 'Error fetching user'
+                    });
+                }
+            }
+        });
+    } else {
+        return res.status(401).json({
+            success: false,
+            message: 'Auth token is not supplied'
+        });
+    }
+
+}
+
+module.exports = checkAndValidateToken;

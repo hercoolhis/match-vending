@@ -8,7 +8,7 @@ module.exports = class ProductService {
         this.FetchProduct = this.FetchProduct.bind(this);
     }
 
-    async CreateProduct(payload) {
+    async CreateProduct(payload, seller) {
         try {
             const { productName } = payload;
             //get input    
@@ -23,7 +23,7 @@ module.exports = class ProductService {
             logger.info("Creating Product"); 
             const product = await createProduct({
                 ...payload,
-            });         
+            }, seller);         
 
             return {
                 product

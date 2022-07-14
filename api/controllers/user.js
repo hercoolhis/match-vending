@@ -4,7 +4,7 @@ const { SignUp } = new AuthService();
 const { FetchUser, UpdateUser, DeleteUser } = new UserService();
 
 
-const userSignUp = async (req, res) => {
+const userSignUp = async (req, res, next) => {
     try {
         let createdUser = await SignUp(req.body);
     

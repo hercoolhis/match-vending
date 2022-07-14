@@ -27,7 +27,7 @@ const deleteProduct = async (id) => {
     return await Product.delete({ id });
 }
 
-const findProduct = async (query) => {
+const findProduct = async (query, isReturnSeller = false) => {
     const Product = await setProductRepository();
 
     const select = ['id', 'amountAvailable', 'cost', "productName"];
@@ -37,6 +37,9 @@ const findProduct = async (query) => {
         where: {
           ...query
         },
+        relations: {
+          seller: isReturnSeller
+        }
       });
 
     return requestedProduct;

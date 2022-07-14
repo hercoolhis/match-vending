@@ -16,7 +16,14 @@ module.exports = class AuthService {
     async SignUp(payload) {
         try {
             //get input  
-            const { username, password } = payload;          
+            const { username, password } = payload;   
+            
+            let userRecord = await findUser({ username });
+
+            if (userRecord) {
+                throw new Error('Username already taken');
+            }
+
             
             //hash password
             logger.info("Hashing Password");

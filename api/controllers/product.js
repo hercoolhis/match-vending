@@ -4,7 +4,11 @@ const { FetchProduct, UpdateProduct, DeleteProduct, CreateProduct } = new Produc
 
 const createProduct = async (req, res, next) => {
     try {
-        let createProduct = await CreateProduct(req.body);
+        const payload = {
+            ...req.body,
+            seller: req.user
+        }
+        let createProduct = await CreateProduct(payload);
     
         res.status(201).json(createProduct);
     } catch (error) {

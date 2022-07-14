@@ -1,22 +1,22 @@
 
 const { Router } = require("express");
-const { createProduct, fetchProduct, updateProduct, deleteProduct } = require("../controllers/product")
+const { createProduct, fetchProduct, updateProduct, deleteProduct } = require("../controllers/product");
+const checkAndValidateToken = require("../midddleware/auth");
+const onlySeller = require("../midddleware/seller-routes")
 const route = Router();
 
 
 
 module.exports = (app) => {
     
-    //signup route ...validate request body first
-    route.post('/', createProduct);
+    route.use(checkAndValidateToken);
 
-    // fetch user
     route.get('/:id', fetchProduct);
 
-    // update user
-    route.put('/:id', updateProduct);
+    route.use(onlySeller);
 
-    // update user
+    route.post('/', createProduct);
+    route.put('/:id', updateProduct);
     route.delete('/:id', deleteProduct);
 
     app.use('/product', route);
