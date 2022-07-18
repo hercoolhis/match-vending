@@ -1,6 +1,6 @@
 
 const { Router } = require("express");
-const { depositCoins, buyProduct } = require("../controllers/operation");
+const { depositCoins, buyProduct, resetDeposit } = require("../controllers/operation");
 const checkAndValidateToken = require("../midddleware/auth")
 const onlyBuyer = require("../midddleware/buyer-routes");
 const validDepositAmount = require("../midddleware/valid-deposit-amount");
@@ -16,7 +16,7 @@ module.exports = (app) => {
     
     route.post('/deposit', validDepositAmount, depositCoins);
     route.post('/buy', canAffordCart, buyProduct);
-    //route.post('/reset', userSignUp);
+    route.post('/reset', resetDeposit);
 
     app.use('/operation', route);
 

@@ -69,6 +69,25 @@ module.exports = class OperationService {
         }
     }
 
+    async ResetDeposit(payload) {
+        try {
+            const { user } = payload;
+            const userService = new UserService()
+
+            //get input 
+            await userService.UpdateUser({ id: user.id, updateObject: { deposit: `0` }  })               
+
+            return {
+                success: true
+            }
+
+        } catch ({ message, status }) {
+            const error = new Error(message);
+            error['status'] = status;
+            throw error;
+        }
+    }
+
     async fetchUserPurchases(userId) {
         try {
             const purchases = await findPurchase({ buyer: userId });
