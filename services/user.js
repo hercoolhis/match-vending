@@ -1,7 +1,5 @@
-const bcrypt = require("bcryptjs");
 const logger = require("../loaders/logger");
 const { createUser, findUser, updateUser, deleteUser } = require("../data-access/user");
-const { Logform } = require("winston");
 
 
 module.exports = class UserService {

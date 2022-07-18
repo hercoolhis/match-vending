@@ -1,27 +1,29 @@
 const { createPurchase, findPurchase } = require("../data-access/purchase");
 const UserService = require("./user");
+const ProductService = require("./product");
 
 
 module.exports = class OperationService {
 
     userService
+    productService;
 
     constructor() {     
         this.BuyProduct = this.BuyProduct.bind(this);
-        //this.userService = new UserService();
+        this.DepositCoins = this.DepositCoins.bind(this);
+        this.ResetDeposit = this.ResetDeposit.bind(this);
+        this.productService = new ProductService();
+        this.userService = new UserService();
     }
 
     async DepositCoins(payload) {
         try {
             const { user, depositAmount } = payload;
-            console.log(+user.deposit, depositAmount);
 
             const newDeposit  = +user.deposit + +depositAmount;
 
-            const userService = new UserService()
-
             //get input 
-            await userService.UpdateUser({ id: user.id, updateObject: { deposit: `${newDeposit}` }  })               
+            await this.userService.UpdateUser({ id: user.id, updateObject: { deposit: `${newDeposit}` }  })               
 
             return {
                 success: true
@@ -42,9 +44,9 @@ module.exports = class OperationService {
 
             const newDeposit  = +user.deposit - +totalCost;
 
-            const userService = new UserService();
+            await this.userService.UpdateUser({ id: user.id, updateObject: { deposit: `${newDeposit}` }  });
 
-            await userService.UpdateUser({ id: user.id, updateObject: { deposit: `${newDeposit}` }  });
+            await this.productService.UpdateProduct({ id: product.id, updateObject: { amountAvailable: product.amountAvailable - 1 } });
             
             // create purchase
             await createPurchase({
@@ -72,10 +74,9 @@ module.exports = class OperationService {
     async ResetDeposit(payload) {
         try {
             const { user } = payload;
-            const userService = new UserService()
 
             //get input 
-            await userService.UpdateUser({ id: user.id, updateObject: { deposit: `0` }  })               
+            await this.userService.UpdateUser({ id: user.id, updateObject: { deposit: `0` }  })               
 
             return {
                 success: true
@@ -97,9 +98,6 @@ module.exports = class OperationService {
             for (const each of purchases) {
                 totalCoinsSpent += +each.totalCost;
             }
-
-            console.log(purchases);
-
 
             return {
                 purchases,
