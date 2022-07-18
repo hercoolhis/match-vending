@@ -16,7 +16,8 @@ module.exports = new EntitySchema({
             type: "varchar"
         },
         deposit: {
-            type: "varchar"
+            type: "varchar",
+            default: "0"
         },
         role: {
             type: "varchar",
@@ -30,5 +31,11 @@ module.exports = new EntitySchema({
           cascade: true,
           inverseSide: 'seller' // Note that this is relation name, not the entity name
         },
-      },
+        purchases: {
+            type: 'one-to-many',
+            target: 'purchase',
+            cascade: true,
+            inverseSide: 'buyer' // Note that this is relation name, not the entity name
+        },
+    },
 });

@@ -1,7 +1,8 @@
 const { DataSource }  = require("typeorm");
 const config = require("../config");
 const User = require("../entities/user");
-const Product = require("../entities/product")
+const Product = require("../entities/product");
+const Purchase = require("../entities/purchase")
 
 
 module.exports = async () => {
@@ -17,7 +18,7 @@ module.exports = async () => {
                 ? false
                 : { rejectUnauthorized: false },
         database: config.databaseName,
-        entities: [User, Product],
+        entities: [User, Product, Purchase],
         synchronize: true,
     });
 
