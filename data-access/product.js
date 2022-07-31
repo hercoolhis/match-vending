@@ -45,9 +45,26 @@ const findProduct = async (query, isReturnSeller = false) => {
     return requestedProduct;
 } 
 
+const findProducts = async () => {
+    const Product = await setProductRepository();
+
+    const select = ['id', 'amountAvailable', 'cost', "productName"];
+
+    let requestedProducts = await Product.find({
+        ...{},
+        relations: {
+            //buyer: true
+        }
+      }, {
+    });
+
+    return requestedProducts;
+} 
+
 module.exports = {
     createProduct,
     findProduct,
     deleteProduct,
-    updateProduct
+    updateProduct,
+    findProducts
 }

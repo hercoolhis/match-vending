@@ -1,6 +1,6 @@
 
 const { Router } = require("express");
-const { createProduct, fetchProduct, updateProduct, deleteProduct } = require("../controllers/product");
+const { createProduct, fetchProduct, fetchAllProducts, updateProduct, deleteProduct } = require("../controllers/product");
 const checkAndValidateToken = require("../midddleware/auth");
 const onlySeller = require("../midddleware/seller-routes")
 const route = Router();
@@ -10,7 +10,7 @@ const route = Router();
 module.exports = (app) => {
     
     route.use(checkAndValidateToken);
-
+    route.get('/', fetchAllProducts);
     route.get('/:id', fetchProduct);
 
     route.use(onlySeller);

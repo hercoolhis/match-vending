@@ -1,5 +1,5 @@
 const ProductService = require("../../services/product");
-const { FetchProduct, UpdateProduct, DeleteProduct, CreateProduct } = new ProductService();
+const { FetchProduct, UpdateProduct, DeleteProduct, CreateProduct, FetchAllProducts } = new ProductService();
 
 
 const createProduct = async (req, res, next) => {
@@ -18,9 +18,20 @@ const createProduct = async (req, res, next) => {
 
 const fetchProduct = async (req, res, next) => {
     try {
-        let fetchedProduct = await FetchProduct(req.params);
+        let fetchedProduct = await FetchProduct();
     
         res.status(200).json(fetchedProduct);
+    } catch (error) {
+        next(error);
+    }
+    
+}
+
+const fetchAllProducts = async (req, res, next) => {
+    try {
+        let fetchedProducts = await FetchAllProducts();
+    
+        res.status(200).json(fetchedProducts);
     } catch (error) {
         next(error);
     }
@@ -59,5 +70,6 @@ module.exports = {
     createProduct,
     fetchProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    fetchAllProducts
 }

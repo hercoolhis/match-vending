@@ -1,5 +1,5 @@
 const logger = require("../loaders/logger");
-const { createProduct, findProduct, updateProduct, deleteProduct } = require("../data-access/product");
+const { createProduct, findProduct, updateProduct, deleteProduct, findProducts } = require("../data-access/product");
 
 
 module.exports = class ProductService {
@@ -42,6 +42,30 @@ module.exports = class ProductService {
 
             logger.info("Fetching Product");
             let product = await findProduct({ id });
+
+            if (!product) {
+                const error = new Error('product not found');
+                error['status'] = 404;
+                throw error;
+            }
+
+            //return product details
+            return {
+                product
+            }
+
+        } catch ({message, status}) {
+            const error = new Error(message);
+            error['status'] = status;
+            throw error;
+        }
+    }
+
+    async FetchAllProducts() {
+        try {
+
+            logger.info("Fetching Products");
+            let product = await findProducts();
 
             if (!product) {
                 const error = new Error('product not found');
